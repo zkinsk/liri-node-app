@@ -5,10 +5,11 @@ var spotify = new Spotify(keys.spotify);
 var fs = require("fs");
 var axios = require("axios");
 var inquire = require("inquirer");
-var stringify = require('json-stringify-safe');
+var stringify = require('json-stringify-safe'); //this is not needed at the finished product but was very useful during devlopment for viewing the data returns from and api
 var moment = require('moment');
 
-// inquire prompt with swtich for additional prompts and function launches
+// as a help for development I added an inquire function so I wouldn't have to type so much when re-running code - 
+// I kept it in the file and use it as a fallback if no parameters are entered during app initializaiton
 function inquireDefault(){
   if (process.argv.length < 3){
     inquire.prompt([
@@ -25,13 +26,12 @@ function inquireDefault(){
     let action = process.argv[2].toLowerCase();
     let query = process.argv.slice(3);
     query = query.join("+");
-    // console.log(action, query);
     actionSwitch(action, query)
   }
 }
 
+// switch function to point at the correct fuction based on search type
 function actionSwitch(action, query){
-  // console.log("aS:" + action + " query: " + query);
   switch(action){
     case "concert-this":
     concertThis(query);
@@ -51,6 +51,7 @@ function actionSwitch(action, query){
   }
 };
 
+// this prompts for search query on inquire fallback
 function queryGet(action){
   switch(action){
     case "concert-this":
@@ -95,8 +96,10 @@ function queryGet(action){
   }
 }
 
+// concert this function - reaches out to bands in town api
 function concertThis(bandName){
-  // console.log(`band Name: ${bandName}`)
+  if(!bandName){bandName = "Zoe Keating"}
+  writeLog("concert-this", bandName); /* pushes search type and query into log file */
   axios.get("https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp").then(
   function(response) {
     let venueInfo = response.data;
@@ -108,11 +111,14 @@ function concertThis(bandName){
       let vCounty = venueInfo[venue].venue.country;
       let vDate = moment(venueInfo[venue].datetime).format("MM/DD/YYYY");
       if (vRegion){vRegion += ", "}
-      console.log(`Venue: ${vName}, on ${vDate}`) 
-      console.log(`Location: ${vCity}, ${vRegion}${vCounty}`)
-      console.log("\n=========************=============\n")
+      let result = `
+      Venue: ${vName}, on ${vDate}
+      Location: ${vCity}, ${vRegion}${vCounty}
+      \n=========************=============\n`
+
+      console.log(result);
+      writeLog(null, result); /* calls for result to be pushed into the log file */
     }
-    // console.log(stringify(response, null, 4));
   })
   .catch(function(error) {
     if (error.response) {
@@ -126,9 +132,9 @@ function concertThis(bandName){
     }
     console.log(error.config);
   });
-  writeLog("concert-this", bandName);
 };
 
+// spotify api call
 function spotiFy(songName){
   if(!songName){songName = "The Sign Ace of Base"}
   spotify.search({ type: 'track', query: songName, limit: 1 })
@@ -139,21 +145,25 @@ function spotiFy(songName){
     for (let i = 1; i < track.album.artists.length; i++){
       artist += ", " + track.album.artists[i].name;
     }
-    // console.log(JSON.stringify(response, null, 2));
-    console.log("\n\n=========************=============\n\n")
-    console.log(`You have chosen the song "${track.name}" by ${artist}, from the album ${album}`) 
-    console.log(`\nHere is a Spotify preview link: ${track.preview_url}`)
-    console.log("\n\n=========************=============\n\n")
+    
+    let result = `
+    \n=========************=============\n
+    You have chosen the song "${track.name}" by ${artist}, from the album ${album} 
+    Here is a Spotify preview link: ${track.preview_url}
+   \n=========************=============\n`;
+
+    console.log(result);
     writeLog("spotify-this-song", songName)
+    writeLog(null, result, true)
   })
   .catch(function(err) {
     console.log(err);
   });
 }
 
+// OMDB database call
 function movieThis(movieName){
   if (!movieName){movieName = "Mr+Nobody"}
-  let movieObj = {};
   axios.get("http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy").then(
   function(response) {
     let movieInfo = response.data;
@@ -163,14 +173,21 @@ function movieThis(movieName){
     if (movieInfo.Ratings[1] != undefined){
       rotTomatoes = movieInfo.Ratings[1].Value
     }else {rotTomatoes = "Oops, no rating"};
-    console.log("\n=========************=============\n")
-    console.log(`\nYou chose : ${movieInfo.Title}, which came out in ${movieInfo.Year}.`)
-    console.log(`It is rated: ${movieInfo.Rated}`);
-    console.log(`\nIMDB rates ${movieInfo.Title} at a ${IMDBRate}, while Rotten Tomatoes rates it at ${rotTomatoes}.`)
-    console.log(`It was produced in ${movieInfo.Country}, and is a ${movieInfo.Language} language film.`)
-    console.log(`\nHere is the basic plot: ${movieInfo.Plot}`)
-    console.log(`\nHere are some of the stars from ${movieInfo.Title}: ${movieInfo.Actors}\n`)
-    console.log("\n=========************=============\n")
+
+    let result = `
+    \n=========************=============\n
+    You chose : ${movieInfo.Title}, which came out in ${movieInfo.Year}.
+    It is rated: ${movieInfo.Rated}
+    IMDB rates ${movieInfo.Title} at a ${IMDBRate}, while Rotten Tomatoes rates it at ${rotTomatoes}.
+    It was produced in ${movieInfo.Country}, and is a ${movieInfo.Language} language film.
+    Here is the basic plot: ${movieInfo.Plot}
+    Here are some of the stars from ${movieInfo.Title}: ${movieInfo.Actors}
+    \n=========************=============\n`
+
+    console.log(result);
+
+    writeLog("movie-this", movieName)
+    writeLog(null, result)
   })
   .catch(function(error) {
     if (error.response) {
@@ -184,9 +201,9 @@ function movieThis(movieName){
     }
     console.log(error.config);
   });
-writeLog("movie-this", movieName, movieObj)
 }
 
+// do say function to read the random text file and run the function contained within
 function doSays(){
   console.log("Do Say");
   fs.readFile("random.txt", "utf8", function(error, data) {
@@ -202,17 +219,23 @@ function doSays(){
         query = query.replace("\"", "")
       }
     }
-    // console.log(action, query);
     actionSwitch(action, query);
   });
 }
-
+// write to the log file
 function writeLog(fnc, query){
-  let logTime = moment();
-  let queryData = `${fnc}, "${query}", ${logTime} \n`;
-  fs.appendFile("log.txt", queryData, function(err) {
-    if (err) {console.log(err)}
-  });
+  if (fnc === null){
+    fs.appendFile("log.txt", query, function(err) {
+      if (err) {console.log(err)}
+    });
+  }else{
+    let logTime = moment();
+    let queryData = `\n${fnc}, "${query}", ${logTime}`;
+    fs.appendFile("log.txt", queryData, function(err) {
+      if (err) {console.log(err)}
+    });
+  }
 }
 
+// starts the ball rolling!
 inquireDefault()

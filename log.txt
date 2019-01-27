@@ -1,5 +1,59 @@
+spotify-this-song, "I Want it That Way", Sun Jan 27 2019 13:40:57 GMT-0500 
 
-spotify-this-song, "time", Sun Jan 27 2019 10:50:45 GMT-0500 
-spotify-this-song, "time pink floyd", Sun Jan 27 2019 10:50:56 GMT-0500 
-spotify-this-song, "time+pink+floyd", Sun Jan 27 2019 10:51:38 GMT-0500 
-movie-this, "star+wars", Sun Jan 27 2019 10:52:00 GMT-0500 
+    
+=========************=============
+
+    You have chosen the song "I Want It That Way" by Backstreet Boys, from the album The Hits--Chapter One 
+    Here is a Spotify preview link: https://p.scdn.co/mp3-preview/e72a05dc3f69c891e3390c3ceaa77fad02f6b5f6?cid=5845e3b9f45a4a979700b8044d0e4078
+   
+=========************=============
+
+spotify-this-song, "The Sign Ace of Base", Sun Jan 27 2019 13:42:00 GMT-0500
+    
+=========************=============
+
+    You have chosen the song "The Sign" by Ace of Base, from the album The Sign (US Album) [Remastered] 
+    Here is a Spotify preview link: https://p.scdn.co/mp3-preview/4c463359f67dd3546db7294d236dd0ae991882ff?cid=5845e3b9f45a4a979700b8044d0e4078
+   
+=========************=============
+
+concert-this, "Zoe Keating", Sun Jan 27 2019 13:42:32 GMT-0500
+      Venue: ArtsRiot, on 02/09/2019
+      Location: Burlington, VT, United States
+      
+=========************=============
+
+      Venue: Thalia Hall Chicago, on 04/04/2019
+      Location: Chicago, IL, United States
+      
+=========************=============
+
+      Venue: The Cube at Fisher Music Center, on 04/06/2019
+      Location: Detroit, MI, United States
+      
+=========************=============
+
+      Venue: Kings Place, on 09/21/2019
+      Location: London, United Kingdom
+      
+=========************=============
+
+      Venue: Kings Place, on 09/22/2019
+      Location: London, United Kingdom
+      
+=========************=============
+
+      Venue: Joe's Pub, on 03/31/2019
+      Location: New York, NY, United States
+      
+=========************=============
+
+      Venue: ArtsRiot, on 02/10/2019
+      Location: Burlington, VT, United States
+      
+=========************=============
+
+      Venue: Zoe Keating, on 04/05/2019
+      Location: Detroit, MI, United States
+      
+=========************=============
