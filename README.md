@@ -1,6 +1,6 @@
-# liri-node-app
+# liri-node-app - University of Richmond BootCamp Project
 
-Siri like app that runs in the cosole instead of by voice.
+**Siri like app that runs in the cosole instead of by voice.**
 
 It can provied info on:
 - Songs via Spotify api
