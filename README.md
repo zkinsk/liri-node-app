@@ -13,7 +13,7 @@ https://youtu.be/snWSDWA2MdI
 ## There are 3 ways to submit a query: 
 
 1. command line prompt via additional text after initializing the app
-  -command line examples: 
+  - command line examples: 
     - spotify-this-song Time Pink Floyd
     - movie-this Star Wars Return of the Jedi
     - concert-this Hootie and the Blow Fish
