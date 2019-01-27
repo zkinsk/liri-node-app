@@ -2,6 +2,9 @@
 
 **I have created a Siri like node.js app that runs on the command line instead of by voice.**
 
+Here is a youtube video of liri in action
+https://youtu.be/snWSDWA2MdI
+
 ## Liri can provide the user information on:
 - Songs via Spotify api
 - Movies via Open Movies Database api
@@ -48,6 +51,10 @@
   - Date of the Event (use moment to format this as "MM/DD/YYYY")
   
   **A concert search with no criteria will return results on Zoe Keating**
+  
+  
+  
+
 
 
 
