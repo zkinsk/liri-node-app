@@ -2,12 +2,12 @@
 
 **I have created a Siri like node.js app that runs on the command line instead of by voice.**
 
-Liri can provied the user information on:
+## Liri can provide the user information on:
 - Songs via Spotify api
 - Movies via Open Movies Database api
 - Concerts via Bands in Town api
 
-There are 3 ways to submit a query: 
+## There are 3 ways to submit a query: 
 
 1. command line prompt via additional text after initializing the app
   -command line examples: 
@@ -19,7 +19,7 @@ There are 3 ways to submit a query:
 
 1. Command prompts via inquiry npm which is the default interaction when there are no search parameters entered at app initialization
 
-Search result are provided via command line returns as well as a text file this is updated with every search request and its results. 
+## Search result are provided via command line returns as well as a text file this is updated with every search request and its results. 
 
 ### A search for a song returns:
   - Artist(s) Name
@@ -47,7 +47,7 @@ Search result are provided via command line returns as well as a text file this 
   - Venue location
   - Date of the Event (use moment to format this as "MM/DD/YYYY")
   
-  **A concert search with no criteria will return results on Zoe Keating
+  **A concert search with no criteria will return results on Zoe Keating**
 
 
 
