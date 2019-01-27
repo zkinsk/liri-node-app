@@ -9,19 +9,49 @@ var stringify = require('json-stringify-safe');
 var moment = require('moment');
 
 // inquire prompt with swtich for additional prompts and function launches
-inquire.prompt([
-    {
-      type: "list",
-      message: "What type of info are you looking for?",
-      choices: ["spotify-this-song", "concert-this", "movie-this", "do-what-it-says"],
-      name: "action"
-    },
-    
-  ]).then(function(actionInput) {
-    actionSwitch(actionInput.action)
-  });
+function inquireDefault(){
+  if (process.argv.length < 3){
+    inquire.prompt([
+      {
+        type: "list",
+        message: "What type of info are you looking for?",
+        choices: ["spotify-this-song", "concert-this", "movie-this", "do-what-it-says"],
+        name: "action"
+      }
+    ]).then(function(actionInput) {
+      queryGet(actionInput.action)
+    });
+  }else{
+    let action = process.argv[2].toLowerCase();
+    let query = process.argv.slice(3);
+    query = query.join("+");
+    // console.log(action, query);
+    actionSwitch(action, query)
+  }
+}
 
-function actionSwitch(action){
+function actionSwitch(action, query){
+  // console.log("aS:" + action + " query: " + query);
+  switch(action){
+    case "concert-this":
+    concertThis(query);
+    break;
+
+    case "spotify-this-song":
+    spotiFy(query);
+    break;
+
+    case "movie-this":
+    movieThis(query);
+    break;
+
+    case "do-what-it-says":
+    doSays();
+    break;
+  }
+};
+
+function queryGet(action){
   switch(action){
     case "concert-this":
     inquire.prompt([
@@ -31,9 +61,10 @@ function actionSwitch(action){
         name: "bandName",      
       }
     ]).then(function(data){
-      concertThis(data.bandName)
+      actionSwitch("concert-this", data.bandName)
     })
     break;
+
     case "spotify-this-song":
     inquire.prompt([
       {
@@ -42,9 +73,10 @@ function actionSwitch(action){
         name: "songName",      
       }
     ]).then(function(data){
-      spotiFy(data.songName)
+      actionSwitch("spotify-this-song", data.songName)
     })
     break;
+
     case "movie-this":
     inquire.prompt([
       {
@@ -53,25 +85,21 @@ function actionSwitch(action){
         name: "movieName",      
       }
     ]).then(function(data){
-      movieThis(data.movieName)
+      actionSwitch("movie-this", data.movieName)
     })
     break;
+
     case "do-what-it-says":
-    doSays()
+    actionSwitch("do-what-it-says");
     break;
   }
 }
 
 function concertThis(bandName){
   // console.log(`band Name: ${bandName}`)
-let concertArr = [];
-let concertObj = {}
-
   axios.get("https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp").then(
   function(response) {
-    // let venueInfo = stringify(response, null, 2);
     let venueInfo = response.data;
-    concertObj = {}
     console.log("\n=========************=============\n")
     for (venue in venueInfo){
       let vName = venueInfo[venue].venue.name;
@@ -83,40 +111,25 @@ let concertObj = {}
       console.log(`Venue: ${vName}, on ${vDate}`) 
       console.log(`Location: ${vCity}, ${vRegion}${vCounty}`)
       console.log("\n=========************=============\n")
-      concertObj = {
-        VenueName: vName,
-        date: vDate,
-        City: vCity,
-        Region: vRegion,
-        County: vCounty,
-      }
-      concertArr.push(concertObj);
-      
     }
     // console.log(stringify(response, null, 4));
   })
   .catch(function(error) {
     if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
       console.log(error.response.data);
       console.log(error.response.status);
       console.log(error.response.headers);
     } else if (error.request) {
-      // The request was made but no response was received
-      // `error.request` is an object that comes back with details pertaining to the error that occurred.
       console.log(error.request);
     } else {
-      // Something happened in setting up the request that triggered an Error
       console.log("Error", error.message);
     }
     console.log(error.config);
   });
-  writeLog("concert-this", bandName, concertArr);
+  writeLog("concert-this", bandName);
 };
 
 function spotiFy(songName){
-  let songObj = {};
   if(!songName){songName = "The Sign Ace of Base"}
   spotify.search({ type: 'track', query: songName, limit: 1 })
   .then(function(response) {
@@ -131,19 +144,11 @@ function spotiFy(songName){
     console.log(`You have chosen the song "${track.name}" by ${artist}, from the album ${album}`) 
     console.log(`\nHere is a Spotify preview link: ${track.preview_url}`)
     console.log("\n\n=========************=============\n\n")
-    songObj = {
-      name: track.name,
-      artist: artist,
-      album: album,
-      // url: track.preview.url
-    }
-    writeLog("spotify-this-song", songName, songObj)
+    writeLog("spotify-this-song", songName)
   })
   .catch(function(err) {
     console.log(err);
   });
-
-  
 }
 
 function movieThis(movieName){
@@ -166,29 +171,15 @@ function movieThis(movieName){
     console.log(`\nHere is the basic plot: ${movieInfo.Plot}`)
     console.log(`\nHere are some of the stars from ${movieInfo.Title}: ${movieInfo.Actors}\n`)
     console.log("\n=========************=============\n")
-    movieObj = {
-      name: movieInfo.Title,
-      year: movieInfo.Year,
-      rated: movieInfo.Rated,
-      IMBD: IMDBRate,
-      rotten: rotTomatoes,
-      plot: movieInfo.Plot,
-      actors: movieInfo.Actors
-    }
   })
   .catch(function(error) {
     if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
       console.log(error.response.data);
       console.log(error.response.status);
       console.log(error.response.headers);
     } else if (error.request) {
-      // The request was made but no response was received
-      // `error.request` is an object that comes back with details pertaining to the error that occurred.
       console.log(error.request);
     } else {
-      // Something happened in setting up the request that triggered an Error
       console.log("Error", error.message);
     }
     console.log(error.config);
@@ -202,34 +193,26 @@ function doSays(){
     if (error) {
       return console.log(error);
     }
-    console.log(data);
     var dataArr = data.split(",");
-
-    console.log(dataArr);
+    let action = dataArr[0].toLowerCase();
+    let query = dataArr.slice(1);
+    query = query.join("+");
+    for(i in query){
+      if(query[i] == "\""){
+        query = query.replace("\"", "")
+      }
+    }
+    // console.log(action, query);
+    actionSwitch(action, query);
   });
 }
 
-function writeLog(fnc, query, data){
-  let queryData = `${fnc}, "${query}" \n`
-  //  ${stringify(data, null, 2)}
+function writeLog(fnc, query){
+  let logTime = moment();
+  let queryData = `${fnc}, "${query}", ${logTime} \n`;
   fs.appendFile("log.txt", queryData, function(err) {
-    if (err) {
-      console.log(err);
-    }
-    else {
-    }
+    if (err) {console.log(err)}
   });
-  // if(Array.isArray(data)){
-  //   for (i in data){
-  //     // let x = stringify(data[i], null, 2)
-  //     fs.appendFile("log.txt", data[i], function(err) {
-  //       if (err) { console.log(err); }
-  //     });
-  //   }
-  // }else{
-    // let x = stringify(data, null, 2)
-    fs.appendFile("dlog.txt", data, function(err) {
-      if (err) { console.log(err); }
-    });
-  // }
 }
+
+inquireDefault()
