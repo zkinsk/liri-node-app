@@ -19,7 +19,7 @@
 
 1. Command prompts via inquiry npm which is the default interaction when there are no search parameters entered at app initialization
 
-## Search result are provided via command line returns as well as a text file this is updated with every search request and its results. 
+## Search result are provided via command line returns as well as a text file which is updated with every search request. 
 
 ### A search for a song returns:
   - Artist(s) Name
