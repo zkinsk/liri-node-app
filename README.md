@@ -1,8 +1,8 @@
 # liri-node-app - University of Richmond BootCamp Project
 
-**Siri like app that runs in the cosole instead of by voice.**
+**I have created a Siri like node.js app that runs on the command line instead of by voice.**
 
-It can provied info on:
+Liri can provied the user information on:
 - Songs via Spotify api
 - Movies via Open Movies Database api
 - Concerts via Bands in Town api
@@ -20,5 +20,36 @@ There are 3 ways to submit a query:
 1. Command prompts via inquiry npm which is the default interaction when there are no search parameters entered at app initialization
 
 Search result are provided via command line returns as well as a text file this is updated with every search request and its results. 
+
+### A search for a song returns:
+  - Artist(s) Name
+  - The song's name
+  - The album that the song is from
+  - A preview link of the song which will launch Spotify
+  
+**A song search with no song chosen will default to "The Sign" by Ace of Base**
+  
+### A search for a movie returns: 
+   - The title of the movie
+   - The year of release
+   - The movies audience suitability rating
+   - The rating per IMDB
+   - The rating per Rotten Tomatoes (if one exists)
+   - Country of production
+   - Language
+   - A plot synopsis
+   - Main cast
+   
+**A movie search with no movie title chosed will default to "Mr Nobody"**
+   
+### A search for a concert returns a list of upcoming concert information, including: 
+  - Name of the venue
+  - Venue location
+  - Date of the Event (use moment to format this as "MM/DD/YYYY")
+  
+  **A concert search with no criteria will return results on Zoe Keating
+
+
+
 
 
