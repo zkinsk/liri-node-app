@@ -2,8 +2,7 @@
 
 **I have created a Siri like node.js app that runs on the command line instead of by voice.**
 
-Here is a youtube video of liri in action
-https://youtu.be/snWSDWA2MdI
+Here is a youtube video of liri in action [Link](https://youtu.be/snWSDWA2MdI)
 
 ## Liri can provide the user information on:
 - Songs via Spotify api
