@@ -17,9 +17,9 @@ Here is a youtube video of liri in action [Link](https://youtu.be/snWSDWA2MdI)
     - movie-this Star Wars Return of the Jedi
     - concert-this Hootie and the Blow Fish
 
-1. A text file, accessed via "do-what-it-says", which contains the query type and search string in the same form as listed in item 1
+2. A text file, accessed via "do-what-it-says", which contains the query type and search string in the same form as listed in item 1
 
-1. Command prompts via inquiry npm which is the default interaction when there are no search parameters entered at app initialization
+3. Command prompts via inquiry npm which is the default interaction when there are no search parameters entered at app initialization
 
 ## Search result are provided via command line returns as well as a text file which is updated with every search request. 
 
